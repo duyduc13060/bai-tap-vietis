@@ -3,6 +3,7 @@ package com.example.baitapvietis.service.impl;
 import com.example.baitapvietis.model.entity.UserEntity;
 import com.example.baitapvietis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +19,11 @@ public class UserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username"));
-        return CustomerUserDetail.buid(user);
+
+        System.out.println(user.getRole().toString() + "role");
+//        System.out.println(CustomerUserDetail.build(user) + "cvbhjkl");
+
+        return CustomerUserDetail.build(user);
     }
 
 

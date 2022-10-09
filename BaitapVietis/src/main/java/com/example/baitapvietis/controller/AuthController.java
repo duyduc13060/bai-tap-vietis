@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
 
@@ -17,31 +16,43 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @RequestMapping(value = "/login/form",method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/login/form",method = RequestMethod.GET)
     public String form(){
         return "security/login";
     }
 
-    @RequestMapping(value = "/login/success",method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/login/success",method = RequestMethod.GET)
     public String success(Model model){
         model.addAttribute("message","dang nhap thanh cong");
-        return "redirect:/home/index";
+        return "security/login";
     }
 
-    @RequestMapping(value = "/login/error",method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/login/error",method = RequestMethod.GET)
     public String error(Model model){
         model.addAttribute("message","Dang nhap that bai");
-        return "redirect:/auth/login/form";
+        return "security/login";
     }
 
-    @RequestMapping(value = "/change", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/change", method = RequestMethod.GET)
     public String getForm(Model model){
         model.addAttribute("change", new ChangePassword());
         return "user/change-password";
     }
 
+    @RequestMapping(value = "/auth/access/denied",method = RequestMethod.GET)
+    public String accessDenied(Model model){
+        model.addAttribute("message","Ban khong co quyen truy xuat");
+        return "security/login";
+    }
 
-    @RequestMapping(value = "/change-pasword",method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/logoff/success",method = RequestMethod.GET)
+    public String logoff(Model model){
+        model.addAttribute("message","Dang xuat thanh cong");
+        return "security/login";
+    }
+
+
+    @RequestMapping(value = "/auth/change-pasword",method = RequestMethod.POST)
     public String changePassword(
             @ModelAttribute("changePassword")ChangePassword changePassword
             ){

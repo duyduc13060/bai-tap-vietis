@@ -4,6 +4,7 @@ import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.WasehouseEntity;
 import com.example.baitapvietis.service.WasehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,17 +21,20 @@ public class WasehouseController {
     private WasehouseService wasehouseService;
 
     @RequestMapping(value = "/list",method = RequestMethod.GET)
+    //@PreAuthorize("hasAnyRole('USER','ADMIN')")
     public String listWasehouse(Model model){
         model.addAttribute("listWasehouse", wasehouseService.getAll());
         return "wasehouse/list-wasehouse";
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.GET)
+   // @PreAuthorize("hasRole('ADMIN')")
     public String loadform(Model model){
         model.addAttribute("wasehouse",new WasehouseEntity());
         return "wasehouse/add-wasehouse";
     }
 
+   // @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
     public String loadFormEdit(@PathVariable("id") Long id,Model model){
 
@@ -42,7 +46,7 @@ public class WasehouseController {
 
         return "wasehouse/edit-wasehouse";
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public String create(
             @ModelAttribute("wasehouse") WasehouseEntity wasehouseEntity,
@@ -51,6 +55,7 @@ public class WasehouseController {
         return "redirect:/wasehouses/list";
     }
 
+  //  @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute("wasehouse") WasehouseEntity wasehouseEntity){
@@ -59,6 +64,7 @@ public class WasehouseController {
     }
 
 
+  //  @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
     public String delete(@PathVariable("id") Long id){
         wasehouseService.deleteWasehouse(id);

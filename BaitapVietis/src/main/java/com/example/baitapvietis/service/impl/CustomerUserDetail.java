@@ -1,19 +1,22 @@
 package com.example.baitapvietis.service.impl;
 
 import com.example.baitapvietis.contants.RoleEnum;
+import com.example.baitapvietis.model.entity.AuthorityEntity;
 import com.example.baitapvietis.model.entity.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CustomerUserDetail implements UserDetails {
 
@@ -23,8 +26,11 @@ public class CustomerUserDetail implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static CustomerUserDetail buid(UserEntity userEntity){
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userEntity.getRole().toString()));
+    public static CustomerUserDetail build(UserEntity userEntity){
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userEntity.getRole().name()));
+
+        System.out.println(authorities+"author");
+        System.out.println(userEntity.getRole().name() + "tostring");
         return CustomerUserDetail.builder()
                 .id(userEntity.getId())
                 .username(userEntity.getUsername())

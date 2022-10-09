@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequstException("Xác nhận lại mật khẩu");
         }
 
-        UserEntity user = userRepository.getReferenceById(userDetail.getId());
+        UserEntity user = userRepository.getById(userDetail.getId());
         user.setPassword(passwordEncoder.encode(changePassword.getPasswordNew()));
         userRepository.save(user);
 

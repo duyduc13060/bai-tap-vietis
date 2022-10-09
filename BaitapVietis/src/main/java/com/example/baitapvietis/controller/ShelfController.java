@@ -24,14 +24,12 @@ public class ShelfController {
     public ShelfController(
             ShelfService shelfService,
             WasehouseService wasehouseService
-
     ){
         this.shelfService = shelfService;
         this.wasehouseService = wasehouseService;
     }
 
 
-//    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/list")
     public String getAll(Model model){
         model.addAttribute("listWasehouse", wasehouseService.getAll());
@@ -39,7 +37,6 @@ public class ShelfController {
         return "shelf/list-shelf";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/add")
     public String loadForm(Model model){
         model.addAttribute("shelf",new ShelfEntity());
@@ -47,12 +44,10 @@ public class ShelfController {
         return "shelf/add-shelf";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/edit/{id}")
     public String loadFormEdit(@PathVariable("id") Long id, Model model){
         Optional<ShelfEntity> findById = Optional.ofNullable(shelfService.findById(id).
                 orElseThrow(() -> new NotFoundException("Id notfound" + id)));
-
         ShelfEntity shelfEntity = findById.get();
         model.addAttribute("shelf",shelfEntity);
 

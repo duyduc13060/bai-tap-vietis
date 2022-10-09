@@ -14,20 +14,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/users")
+//@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
 
-    @GetMapping("/list")
+    @RequestMapping(value = "/users/list",method = RequestMethod.GET)
     public String listUser(Model model){
         model.addAttribute("listUser", userService.listUser());
         return "user/list-user";
     }
 
-    @GetMapping("/add")
+    @RequestMapping(value = "/users/add",method = RequestMethod.GET)
     public String loadForm(
             Model model
     ){
@@ -38,7 +38,7 @@ public class UserController {
         return "user/add-user";
     }
 
-    @GetMapping("/edit/{id}")
+    @RequestMapping(value = "/users/edit/{id}",method = RequestMethod.GET)
     public String editUser(
             Model model,
             @PathVariable("id") Long id
@@ -52,9 +52,7 @@ public class UserController {
         return "user/edit-user";
     }
 
-
-
-    @PostMapping("/create")
+    @RequestMapping(value = "/users/create",method = RequestMethod.POST)
     public String create(
             @ModelAttribute("user")UserEntity userEntity
     ){
