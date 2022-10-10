@@ -13,4 +13,8 @@ public interface UserService {
     Optional<UserEntity> findById(Long id);
 
     boolean deleteUser(Long id);
+
+    UserEntity update(Long id, UserEntity userEntity);
+
+    List<UserEntity> search(String username);
 }

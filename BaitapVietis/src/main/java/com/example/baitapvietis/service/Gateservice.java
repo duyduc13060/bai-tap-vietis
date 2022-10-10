@@ -4,10 +4,12 @@ import com.example.baitapvietis.model.entity.GateEntity;
 
 import java.util.List;
 
-public interface GateService {
+public interface Gateservice {
     List<GateEntity> getAll();
 
     GateEntity create(GateEntity gateEntity);
 
-    boolean delete(Long id);
+    GateEntity update(Long id, GateEntity gateEntity);
+
+    void delete(Long id);
 }

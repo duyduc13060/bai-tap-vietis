@@ -20,6 +20,7 @@ public class WasehouseController {
     @Autowired
     private WasehouseService wasehouseService;
 
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     //@PreAuthorize("hasAnyRole('USER','ADMIN')")
     public String listWasehouse(Model model){
@@ -27,6 +28,7 @@ public class WasehouseController {
         return "wasehouse/list-wasehouse";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/add",method = RequestMethod.GET)
    // @PreAuthorize("hasRole('ADMIN')")
     public String loadform(Model model){
@@ -34,7 +36,7 @@ public class WasehouseController {
         return "wasehouse/add-wasehouse";
     }
 
-   // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
     public String loadFormEdit(@PathVariable("id") Long id,Model model){
 
@@ -46,7 +48,7 @@ public class WasehouseController {
 
         return "wasehouse/edit-wasehouse";
     }
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public String create(
             @ModelAttribute("wasehouse") WasehouseEntity wasehouseEntity,
@@ -55,7 +57,7 @@ public class WasehouseController {
         return "redirect:/wasehouses/list";
     }
 
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute("wasehouse") WasehouseEntity wasehouseEntity){
@@ -64,7 +66,7 @@ public class WasehouseController {
     }
 
 
-  //  @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
     public String delete(@PathVariable("id") Long id){
         wasehouseService.deleteWasehouse(id);

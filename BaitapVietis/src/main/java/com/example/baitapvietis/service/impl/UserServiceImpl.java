@@ -1,14 +1,15 @@
 package com.example.baitapvietis.service.impl;
 
+import com.example.baitapvietis.contants.RoleEnum;
+import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.UserEntity;
 import com.example.baitapvietis.repository.UserRepository;
 import com.example.baitapvietis.service.UserService;
-import com.example.baitapvietis.utils.CurrentUserUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,27 +56,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(Long id){
-        Optional<UserEntity> optionalUser = userRepository.findById(id);
-        if(!optionalUser.isPresent()) return false;
-
+        Optional<UserEntity> optionalUser = Optional.ofNullable(userRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("User id not found" + id)));
         UserEntity userEntity = optionalUser.get();
+
         userRepository.deleteById(userEntity.getId());
 
         return true;
     }
 
-    public UserEntity update(Long id,UserEntity userEntity){
+    @Override
+    public UserEntity update(Long id, UserEntity userEntity){
+        Optional<UserEntity> findById = Optional.ofNullable(userRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("User id not found " + id)));
 
+        UserEntity userOld = findById.get();
 
-        Optional<UserEntity> findById = userRepository.findById(id);
-        if(!findById.isPresent()) return null;
+        userEntity.setUsername(userOld.getUsername());
+        userEntity.setPassword(userOld.getPassword());
+        userEntity.setDateOfBrithday(userOld.getDateOfBrithday());
 
-        UserEntity user = findById.get();
-
-
-        return userRepository.save(user);
+        return userRepository.save(userEntity);
     }
 
+    @Override
+    public List<UserEntity> search(String username){
+        List<UserEntity> userEntityList = null;
+
+        if(!StringUtils.hasText(username)){
+            userEntityList = userRepository.findAll();
+            return userEntityList;
+        }else{
+            userEntityList = userRepository.searchByUsername(username);
+            return userEntityList;
+        }
+
+    }
 
 
 }

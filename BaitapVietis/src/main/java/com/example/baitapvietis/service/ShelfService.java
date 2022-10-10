@@ -13,4 +13,8 @@ public interface ShelfService {
     ShelfEntity create(ShelfEntity shelfEntity);
 
     ShelfEntity update(Long id, ShelfEntity shelfEntity);
+
+    void delete(Long id);
+
+    List<ShelfEntity> search(Long id);
 }

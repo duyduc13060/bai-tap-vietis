@@ -18,13 +18,12 @@
         <div class="row mt-5">
             <div class="">
                 <h5 class="">
-                    List shelf
+                    List Anten
                 </h5>
-                <a th:href="@{/shelfs/add}" class="btn btn-success">Create</a>
+                <a th:href="@{/antens/add}" class="btn btn-success">Create</a>
                 <div class="row">
                     <div class="col-3">
                         <form th:action="@{/shelfs/search}">
-                            <label>Wasehouse Name</label>
                             <select class="form-select" name="id"
                                     aria-label="Default select example">
                                 <option th:each="wasehouse : ${listWasehouse}"
@@ -40,22 +39,28 @@
                 <table class="table table-bordered table-hover mt-3">
                     <thead>
                     <tr>
-                        <th>Shelt id</th>
-                        <th>Name</th>
-                        <th>Stages</th>
-                        <th colspan="2"></th>
+                        <th>Wasehouse Id</th>
+                        <th>Wasehouse Name</th>
+                        <th>Anten Id</th>
+                        <th>Port no</th>
+                        <th>Shelf Id</th>
+                        <th>Stages Number</th>
+                        <th colspan="2">action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="shelf : ${listShelf}">
-                        <td th:text="${shelf.id}"></td>
-                        <td th:text="${shelf.name}"></td>
-                        <td th:text="${shelf.stages}"></td>
+                    <tr th:each="anten : ${listAnten}">
+                        <td ></td>
+                        <td></td>
+                        <td th:text="${anten.id}"></td>
+                        <td th:text="${anten.portNo}"></td>
+                        <td th:text="${anten.sheftId}"></td>
+                        <td th:text="${anten.stageNumber}"></td>
                         <td>
-                            <a th:href="@{'/shelfs/edit/' + ${shelf.id}}" class="btn btn-success">Edit</a>
+                            <a th:href="@{'/antens/edit/' + ${anten.id}}" class="btn btn-success">Edit</a>
                         </td>
                         <td>
-                            <a th:href="@{'/shelfs/delete/' + ${shelf.id}}" class="btn btn-danger">Delete</a>
+                            <a th:href="@{'/antens/delete/' + ${anten.id}}" href="" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                     </tbody>

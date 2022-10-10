@@ -56,6 +56,32 @@ public class ShelfServiceImpl implements ShelfService {
         return shelfRepository.save(shelfEntity);
     }
 
+    @Override
+    public void delete(Long id){
+        Optional<ShelfEntity> findById = Optional.ofNullable(shelfRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Shelfs id not found" + id)));
+
+        ShelfEntity shelf = findById.get();
+        shelfRepository.deleteById(shelf.getId());
+    }
+
+    @Override
+    public List<ShelfEntity> search(Long id){
+//        Optional<WasehouseEntity> findByWasehousId = Optional.ofNullable(wasehouseRepository.findById(id)
+//                .orElseThrow(() -> new NotFoundException("Wasehouse Id not found" + id)));
+
+        Optional<WasehouseEntity> findByWasehousId = wasehouseRepository.findById(id);
+
+        List<ShelfEntity> shelfEntityList = null;
+        if(!findByWasehousId.isPresent()){
+            shelfEntityList = shelfRepository.findAll();
+            return shelfEntityList;
+        }else{
+            shelfEntityList = shelfRepository.findByWasehoue(id);
+            return shelfEntityList;
+        }
+    }
+
 
 
 }

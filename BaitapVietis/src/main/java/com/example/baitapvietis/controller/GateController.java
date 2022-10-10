@@ -1,9 +1,10 @@
 package com.example.baitapvietis.controller;
 
 import com.example.baitapvietis.model.entity.GateEntity;
-import com.example.baitapvietis.service.GateService;
+import com.example.baitapvietis.service.Gateservice;
 import com.example.baitapvietis.service.WasehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/gates")
 public class GateController {
 
-    private final GateService gateService;
+    private final Gateservice gateService;
     private final WasehouseService wasehouseService;
 
+    @Autowired
     public GateController(
-            GateService gateService,
+            Gateservice gateService,
             WasehouseService wasehouseService
     ){
         this.gateService = gateService;
@@ -24,22 +26,40 @@ public class GateController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/list")
     public String getAll(Model model){
         model.addAttribute("gate", new GateEntity());
         model.addAttribute("listWasehouse", wasehouseService.getAll());
         model.addAttribute("listGate", gateService.getAll());
-        return "gate/gate";
+        return "gate/list-gate";
     }
 
-    @PostMapping("/create")
-    private String create(@ModelAttribute("gate")GateEntity gateEntity){
+    @GetMapping("/add")
+    public String getFormAdd(Model model){
+        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("gate", new GateEntity());
 
+        return "gate/add-gate";
+    }
+
+    @GetMapping("/edit/{id}")
+    private String getFormEdit(Model model){
+        model.addAttribute("gate",new GateEntity());
+        return "gate/edit-gate";
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    private String create(
+            @ModelAttribute("gate") GateEntity gateEntity)
+    {
         gateService.create(gateEntity);
         return "redirect:gates/list";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
     private String delete(@PathVariable("id") Long id){
         gateService.delete(id);
         return "redirect:gates/list";

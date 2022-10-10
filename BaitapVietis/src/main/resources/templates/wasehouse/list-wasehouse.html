@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       th:replace="~{layout/index :: areas(~{::title},~{::main})}"
 >
 
@@ -21,18 +22,9 @@
                 <h5 class="">
                     List Wasehouse
                 </h5>
+                <th:block sec:authorize="hasAuthority('ADMIN')">
                 <a th:href="@{/wasehouses/add}" class="btn btn-success">Create</a>
-                <div class="row mt-2">
-                    <div class="col-3">
-                        <select class="form-select" aria-label="Default select example">
-                            <option th:each="wasehouse : ${listWasehouse}"
-                                    th:value="${wasehouse.id}"
-                                    th:text="${wasehouse.wasehouseName}">
-                            </option>
-                        </select>
-                    <button class="btn btn-success float-end">Search</button>
-                    </div>
-                </div>
+                </th:block>
 
                 <table class="table table-bordered table-hover mt-3">
                     <thead>
@@ -48,13 +40,22 @@
                         <td th:text="${wasehouse.id}"></td>
                         <td th:text="${wasehouse.wasehouseName}">ew</td>
                         <td th:text="${wasehouse.address}"></td>
-                        <td>
-                            <a th:href="@{'/wasehouses/edit/' + ${wasehouse.id}}">Edit</a>
-                        </td>
-                        <td>
-                            <a th:href="@{'/wasehouses/delete/' + ${wasehouse.id}}">Delete</a>
-                        </td>
-
+                        <th:block sec:authorize="isAuthenticated()">
+                            <th:block sec:authorize="hasAuthority('ADMIN')">
+                                <td>
+                                    <a th:href="@{'/wasehouses/edit/' + ${wasehouse.id}}"
+                                       class="btn btn-success">
+                                        Edit
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/wasehouses/delete/' + ${wasehouse.id}}"
+                                       class="btn btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                            </th:block>
+                        </th:block>
                     </tr>
                     </tbody>
                 </table>

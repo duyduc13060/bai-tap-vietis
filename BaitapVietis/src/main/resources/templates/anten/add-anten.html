@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/index :: areas(~{::title},~{::main})}"
-
 >
 
 <head>
@@ -20,38 +28,47 @@
             <div class="col-8">
                 <div class="card">
                     <div class="card-header">
-                        Create stages
+                        Create gate
                     </div>
-                    <form th:action="@{/shelfs/create}"
-                          th:object="${shelf}"
+                    <form th:action="@{/antens/create}"
+                          th:object="${anten}"
                           method="post">
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="mt-2">
                                     <div class="form-group">
-                                        <label for="">Wasehouse Name</label>
+                                        <label for="">Reader writer</label>
                                         <select class="form-select"
-                                                th:field="*{wasehoueId}">
-                                            <option th:each="wasehouse : ${listWasehouse}"
-                                                    th:value="${wasehouse.id}"
-                                                    th:text="${wasehouse.wasehouseName}"></option>
+                                                th:field="*{readerWriterId}">
+                                            <option th:each="reader : ${listReader}"
+                                                    th:value="${reader.id}"
+                                                    th:text="${reader.address}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Shelf Name</label>
+                                        <select class="form-select"
+                                                th:field="*{sheftId}">
+                                            <option th:each="shelf : ${listShelf}"
+                                                    th:value="${shelf.id}"
+                                                    th:text="${shelf.name}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group mt-2">
-                                        <label for="">Name</label>
+                                        <label for="">Port No</label>
                                         <input type="text" class="form-control"
-                                               th:field="*{name}"
-                                               placeholder="stages name"
-                                               aria-label="stages name"
+                                               th:field="*{portNo}"
+                                               placeholder="Port No"
+                                               aria-label="Port No"
                                                aria-describedby="basic-addon1">
                                     </div>
 
                                     <div class="form-group mt-3">
-                                        <label for="">Number of stages</label>
+                                        <label for="">Stage Number</label>
                                         <input type="text" class="form-control"
-                                               th:field="*{stages}"
-                                               placeholder="number Of Stages"
-                                               aria-label="number Of Stages"
+                                               th:field="*{stageNumber}"
+                                               placeholder="Stage Number"
+                                               aria-label="Stage Number"
                                                aria-describedby="basic-addon1">
                                     </div>
 
@@ -59,7 +76,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a th:href="@{/shelfs/list}" class="btn btn-primary">List Shelf</a>
+                            <a th:href="@{/antens/list}" class="btn btn-primary">List Anten</a>
                             <button class="btn btn-success float-end">Save</button>
                         </div>
                     </form>
@@ -75,4 +92,6 @@
         crossorigin="anonymous"></script>
 </body>
 
+</html>
+</body>
 </html>

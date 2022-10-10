@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WasehoseServiceImpl implements WasehouseService {
+public class WasehouseServiceImpl implements WasehouseService {
 
     private final WasehouseRepository wasehouseRepository;
 
-    public WasehoseServiceImpl(WasehouseRepository wasehouseRepository){
+    public WasehouseServiceImpl(WasehouseRepository wasehouseRepository){
         this.wasehouseRepository = wasehouseRepository;
     }
 

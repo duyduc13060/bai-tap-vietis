@@ -30,13 +30,15 @@ public class ShelfController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/list")
     public String getAll(Model model){
         model.addAttribute("listWasehouse", wasehouseService.getAll());
-        model.addAttribute("listshelf",shelfService.getALl());
+        model.addAttribute("listShelf",shelfService.getALl());
         return "shelf/list-shelf";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/add")
     public String loadForm(Model model){
         model.addAttribute("shelf",new ShelfEntity());
@@ -44,18 +46,20 @@ public class ShelfController {
         return "shelf/add-shelf";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/edit/{id}")
     public String loadFormEdit(@PathVariable("id") Long id, Model model){
         Optional<ShelfEntity> findById = Optional.ofNullable(shelfService.findById(id).
                 orElseThrow(() -> new NotFoundException("Id notfound" + id)));
         ShelfEntity shelfEntity = findById.get();
+
         model.addAttribute("shelf",shelfEntity);
+        model.addAttribute("listWasehouse", wasehouseService.getAll());
 
         return "shelf/edit-shelf";
     }
 
-
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(
             @ModelAttribute("shelf") ShelfEntity shelfEntity
@@ -64,7 +68,7 @@ public class ShelfController {
         return "redirect:/shelfs/list";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(
             @PathVariable("id") Long id,
@@ -72,6 +76,28 @@ public class ShelfController {
     ){
         shelfService.update(id, shelfEntity);
         return "redirect:/shelfs/list";
+    }
+
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @RequestMapping(value = "/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+        shelfService.delete(id);
+        return "redirect:/shelfs/list";
+    }
+
+
+    @RequestMapping("/search")
+    public String search(
+        @RequestParam(value = "id",required = false) Long id ,
+        Model model
+    ){
+        model.addAttribute("listWasehouse", wasehouseService.getAll());
+
+        List<ShelfEntity> shelfEntityList = shelfService.search(id);
+        model.addAttribute("listShelf",shelfEntityList);
+
+        return "shelf/list-shelf";
     }
 
 

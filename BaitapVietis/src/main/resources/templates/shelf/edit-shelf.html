@@ -31,6 +31,9 @@
                                         <label for="">Wasehouse Name</label>
                                         <select class="form-select"
                                                 th:field="*{wasehoueId}">
+<!--                                            <option th:value="${shelf.wasehoueId}"-->
+<!--                                                    th:text="${shelf.wasehoueId}">-->
+                                            </option>
                                             <option th:each="wasehouse : ${listWasehouse}"
                                                     th:value="${wasehouse.id}"
                                                     th:text="${wasehouse.wasehouseName}"></option>

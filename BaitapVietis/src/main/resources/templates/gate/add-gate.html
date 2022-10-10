@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/index :: areas(~{::title},~{::main})}"
+>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+<main>
+  <div class="container">
+    <div class="row offset-3 mt-5">
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header">
+            Create gate
+          </div>
+          <form th:action="@{/gates/create}"
+                th:object="${gate}"
+                method="post">
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="mt-2">
+                  <div class="form-group">
+                    <label for="">Wasehouse Name</label>
+                    <select class="form-select"
+                            th:field="*{wasehouseId}">
+                      <option th:each="wasehouse : ${listWasehouse}"
+                              th:value="${wasehouse.id}"
+                              th:text="${wasehouse.wasehouseName}"></option>
+                    </select>
+                  </div>
+                  <div class="form-group mt-2">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control"
+                           th:field="*{gateName}"
+                           placeholder="Gate name"
+                           aria-label="Gate name"
+                           aria-describedby="basic-addon1">
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <label for="">Ip address</label>
+                    <input type="text" class="form-control"
+                           th:field="*{ipAddress}"
+                           placeholder="Ip address"
+                           aria-label="Ip address"
+                           aria-describedby="basic-addon1">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a th:href="@{/gates/list}" class="btn btn-primary">List gate</a>
+              <button class="btn btn-success float-end">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+</body>
+</html>

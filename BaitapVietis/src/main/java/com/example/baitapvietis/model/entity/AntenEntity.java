@@ -17,6 +17,11 @@ public class AntenEntity {
     @Column(name = "port_no")
     private Float portNo;
 
+    @Column(name = "stage_number")
+    private Float stageNumber;
+
     private Long sheftId;
+
+    private Long readerWriterId;
 
 }
