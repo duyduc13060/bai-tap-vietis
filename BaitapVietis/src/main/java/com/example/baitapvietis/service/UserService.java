@@ -1,20 +1,21 @@
 package com.example.baitapvietis.service;
 
+import com.example.baitapvietis.model.dto.UserDto;
 import com.example.baitapvietis.model.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    List<UserEntity> listUser();
+    List<UserDto> listUser();
 
-    UserEntity create(UserEntity userEntity);
+    UserDto create(UserDto userDto);
 
-    Optional<UserEntity> findById(Long id);
+    UserDto findById(Long id);
 
     boolean deleteUser(Long id);
 
-    UserEntity update(Long id, UserEntity userEntity);
+    UserDto update(Long id, UserDto userDto);
 
     List<UserEntity> search(String username);
 }

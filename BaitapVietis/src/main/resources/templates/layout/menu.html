@@ -26,6 +26,9 @@
                         <a class="nav-link" th:href="@{/antens/list}">Anten</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" th:href="@{/readers/list}">Reader writer</a>
+                    </li>
+                    <li class="nav-item"sec:authorize="hasAuthority('ADMIN')">
                         <a class="nav-link" th:href="@{/users/list}">User Management</a>
                     </li>
                     <li class="nav-item dropdown">

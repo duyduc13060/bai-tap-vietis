@@ -30,6 +30,7 @@
                                        th:field="*{fullname}"
                                        placeholder="Name" aria-label="Name"
                                        aria-describedby="basic-addon1">
+                                <span class="text-danger" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"/>
                             </div>
                         </div>
                         <div class="col-6 mt-2 ">

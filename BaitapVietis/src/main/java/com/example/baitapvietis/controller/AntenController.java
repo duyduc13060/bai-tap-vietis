@@ -6,12 +6,10 @@ import com.example.baitapvietis.service.AntenService;
 import com.example.baitapvietis.service.ReaderWriterService;
 import com.example.baitapvietis.service.ShelfService;
 import com.example.baitapvietis.service.WasehouseService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,22 +27,25 @@ public class AntenController {
             WasehouseService wasehouseService,
             ShelfService shelfService,
             ReaderWriterService readerWriterService
-    ){
+    ) {
         this.antenService = antenService;
         this.wasehouseService = wasehouseService;
         this.shelfService = shelfService;
         this.readerWriterService = readerWriterService;
     }
 
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @RequestMapping("/list")
-    public String getAll(Model model){
-        model.addAttribute("listAnten",antenService.getAll());
+    public String getAll(Model model) {
+        model.addAttribute("listAnten", antenService.get());
+//        model.addAttribute("listAnten", antenService.getAll());
         model.addAttribute("listWasehouse", wasehouseService.getAll());
         return "anten/list-anten";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping("/add")
-    public String getFormAdd(Model model){
+    public String getFormAdd(Model model) {
         model.addAttribute("listReader", readerWriterService.getAll());
         model.addAttribute("listShelf", shelfService.getALl());
         model.addAttribute("anten", new AntenEntity());
@@ -52,8 +53,9 @@ public class AntenController {
         return "anten/add-anten";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping("/edit/{id}")
-    public String getFormEdit(@PathVariable("id") Long id,  Model model){
+    public String getFormEdit(@PathVariable("id") Long id, Model model) {
 
         model.addAttribute("listReader", readerWriterService.getAll());
         model.addAttribute("listShelf", shelfService.getALl());
@@ -67,28 +69,28 @@ public class AntenController {
         return "anten/edit-anten";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute("anten") AntenEntity antenEntity){
+    public String create(@ModelAttribute("anten") AntenEntity antenEntity) {
         antenService.create(antenEntity);
         return "redirect:/antens/list";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(
             @PathVariable("id") Long id,
-            @ModelAttribute("anten") AntenEntity antenEntity){
-        antenService.update(id,antenEntity);
+            @ModelAttribute("anten") AntenEntity antenEntity) {
+        antenService.update(id, antenEntity);
         return "redirect:/antens/list";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(@PathVariable("id") Long id){
+    public String delete(@PathVariable("id") Long id) {
         antenService.delete(id);
         return "redirect:/antens/list";
     }
-
-
-
 
 
 }

@@ -1,15 +1,23 @@
 package com.example.baitapvietis.model.entity;
 
 import com.example.baitapvietis.contants.RoleEnum;
-import lombok.Data;
+import lombok.*;
 import org.springframework.web.bind.annotation.CookieValue;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -26,7 +34,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "create_date")
-    private LocalDateTime dateOfBrithday;
+    private String dateOfBrithday;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)

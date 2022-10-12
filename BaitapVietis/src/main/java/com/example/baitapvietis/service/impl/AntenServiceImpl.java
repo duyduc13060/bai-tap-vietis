@@ -1,12 +1,16 @@
 package com.example.baitapvietis.service.impl;
 
+import com.example.baitapvietis.dao.AntenWasehouseDao;
 import com.example.baitapvietis.exception.NotFoundException;
+import com.example.baitapvietis.model.dto.AntenWasehouseDto;
 import com.example.baitapvietis.model.entity.AntenEntity;
 import com.example.baitapvietis.model.entity.ReaderWriterEntity;
 import com.example.baitapvietis.model.entity.ShelfEntity;
+import com.example.baitapvietis.model.entity.WasehouseEntity;
 import com.example.baitapvietis.repository.AntenRepository;
 import com.example.baitapvietis.repository.ReaderWriterRepository;
 import com.example.baitapvietis.repository.ShelfRepository;
+import com.example.baitapvietis.repository.WasehouseRepository;
 import com.example.baitapvietis.service.AntenService;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +23,31 @@ public class AntenServiceImpl implements AntenService {
     private final AntenRepository antenRepository;
     private final ShelfRepository shelfRepository;
     private final ReaderWriterRepository readerWriterRepository;
+    private final AntenWasehouseDao antenWasehouseDao;
+    private final WasehouseRepository wasehouseRepository;
 
     public AntenServiceImpl(
             AntenRepository antenRepository,
             ShelfRepository shelfRepository,
-            ReaderWriterRepository readerWriterRepository
+            ReaderWriterRepository readerWriterRepository,
+            AntenWasehouseDao antenWasehouseDao,
+            WasehouseRepository wasehouseRepository
     ){
         this.antenRepository = antenRepository;
         this.shelfRepository = shelfRepository;
         this.readerWriterRepository = readerWriterRepository;
+        this.antenWasehouseDao = antenWasehouseDao;
+        this.wasehouseRepository = wasehouseRepository;
     }
 
     @Override
     public List<AntenEntity> getAll(){
         return antenRepository.findAll();
+    }
+
+    @Override
+    public List<AntenWasehouseDto> get(){
+        return antenWasehouseDao.getAntenWasehouse();
     }
 
     @Override
@@ -67,6 +82,10 @@ public class AntenServiceImpl implements AntenService {
         AntenEntity anten = findById.get();
         antenRepository.deleteById(anten.getId());
     }
+
+
+
+
 
 
 

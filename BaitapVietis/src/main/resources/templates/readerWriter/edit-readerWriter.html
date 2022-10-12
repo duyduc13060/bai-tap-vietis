@@ -22,7 +22,7 @@
           <div class="card-header">
             Create reader writer
           </div>
-          <form th:action="@{/readers/create}"
+          <form th:action="@{'/readers/update/' + ${reader.id}}"
                 th:object="${reader}"
                 method="post">
             <div class="card-body">

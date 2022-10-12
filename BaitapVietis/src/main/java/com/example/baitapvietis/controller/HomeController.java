@@ -15,7 +15,7 @@ public class HomeController {
     @RequestMapping(value = "/home/index", method = RequestMethod.GET)
     public String index(Model model){
         model.addAttribute("message","ban phai dang nhap");
-        return "redirect:/users/list";
+        return "redirect:/shelfs/list";
     }
 
 }

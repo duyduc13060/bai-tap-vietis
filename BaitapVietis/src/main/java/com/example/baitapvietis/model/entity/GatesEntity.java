@@ -1,16 +1,13 @@
 package com.example.baitapvietis.model.entity;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "gate")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class GateEntity {
+@Data
+public class GatesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

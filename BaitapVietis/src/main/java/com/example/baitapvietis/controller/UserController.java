@@ -2,14 +2,19 @@ package com.example.baitapvietis.controller;
 
 import com.example.baitapvietis.contants.RoleEnum;
 import com.example.baitapvietis.exception.NotFoundException;
+import com.example.baitapvietis.model.dto.UserDto;
 import com.example.baitapvietis.model.entity.UserEntity;
 import com.example.baitapvietis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -24,19 +29,19 @@ public class UserController {
 
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/list")
-    public String listUser(Model model){
+    public String listUser(Model model) {
         model.addAttribute("listUser", userService.listUser());
         return "user/list-user";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping( "/add")
+    @GetMapping("/add")
     public String loadForm(
             Model model
-    ){
+    ) {
+        model.addAttribute("user", new UserDto());
         RoleEnum[] role = RoleEnum.values();
         model.addAttribute("roles", role);
-        model.addAttribute("user",new UserEntity());
 
         return "user/add-user";
     }
@@ -46,50 +51,68 @@ public class UserController {
     public String editUser(
             Model model,
             @PathVariable("id") Long id
-    ){
-        Optional<UserEntity> findById = Optional.ofNullable(userService.findById(id).
-                orElseThrow(() -> new NotFoundException("Id not found" + id)));
-
-        UserEntity user = findById.get();
-        RoleEnum [] roleEnums = RoleEnum.values();
-
+    ) {
+        RoleEnum[] roleEnums = RoleEnum.values();
         model.addAttribute("role", roleEnums);
+
+        UserDto user = userService.findById(id);
         model.addAttribute("user", user);
 
         return "user/edit-user";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(
-            @ModelAttribute("user")UserEntity userEntity
-    ){
-        userService.create(userEntity);
+            @Valid @ModelAttribute("user") UserDto userDto,
+            BindingResult bindingResult, Model model
+    ) {
+        RoleEnum[] role = RoleEnum.values();
+        model.addAttribute("roles", role);
+
+        if (bindingResult.hasErrors()) return "user/add-user";
+
+        userService.create(userDto);
 
         return "redirect:/users/list";
     }
 
-    @RequestMapping(value = "/update/{id}")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String update(
             @PathVariable("id") Long id,
-            @ModelAttribute("user") UserEntity userEntity
+            @Validated @ModelAttribute("user") UserDto userDto,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        RoleEnum[] role = RoleEnum.values();
+        model.addAttribute("roles", role);
 
-    ){
-        userService.update(id,userEntity);
+        if (bindingResult.hasErrors()) {
+            return "user/edit-user";
+        }else{
+            userService.update(id, userDto);
+
+        }
+
+        return "redirect:/users/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
         return "redirect:/users/list";
     }
 
 
     @RequestMapping("/search")
     public String search(
-            @RequestParam(name = "username") String username,
+            @RequestParam(name = "username",required = false) String username,
             Model model
-    ){
+    ) {
         List<UserEntity> userEntityList = userService.search(username);
-        model.addAttribute("listUser",userEntityList);
+        model.addAttribute("listUser", userEntityList);
         return "user/list-user";
     }
-
 
 
 }

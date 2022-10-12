@@ -19,7 +19,7 @@ public class ReaderWriterEntity {
     @Column(name ="ip_address")
     private String ipAddress;
 
-    private Long warehouseId;
+    private Long wasehouseId;
 
 
 
