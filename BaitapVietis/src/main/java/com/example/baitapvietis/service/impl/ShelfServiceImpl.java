@@ -2,9 +2,9 @@ package com.example.baitapvietis.service.impl;
 
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.ShelfEntity;
-import com.example.baitapvietis.model.entity.WasehouseEntity;
+import com.example.baitapvietis.model.entity.WarehouseEntity;
 import com.example.baitapvietis.repository.ShelfRepository;
-import com.example.baitapvietis.repository.WasehouseRepository;
+import com.example.baitapvietis.repository.WarehouseRepository;
 import com.example.baitapvietis.service.ShelfService;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +15,15 @@ import java.util.Optional;
 public class ShelfServiceImpl implements ShelfService {
 
     private final ShelfRepository shelfRepository;
-    private final WasehouseRepository wasehouseRepository;
+    private final WarehouseRepository warehouseRepository;
 
     public ShelfServiceImpl(
             ShelfRepository shelfRepository,
-            WasehouseRepository wasehouseRepository
+            WarehouseRepository warehouseRepository
 
     ){
         this.shelfRepository = shelfRepository;
-        this.wasehouseRepository = wasehouseRepository;
+        this.warehouseRepository = warehouseRepository;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ShelfServiceImpl implements ShelfService {
 
     @Override
     public ShelfEntity create(ShelfEntity shelfEntity){
-        Optional<WasehouseEntity> findByWasehouseId = Optional.ofNullable(wasehouseRepository.findById(shelfEntity.getWasehoueId())
+        Optional<WarehouseEntity> findByWasehouseId = Optional.ofNullable(warehouseRepository.findById(shelfEntity.getWasehoueId())
                 .orElseThrow(() -> new NotFoundException("Id not found")));
 
         return shelfRepository.save(shelfEntity);
@@ -50,7 +50,7 @@ public class ShelfServiceImpl implements ShelfService {
         Optional<ShelfEntity> findById = Optional.ofNullable(shelfRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Shelf Id not found" + id)));
 
-        Optional<WasehouseEntity> findByWasehouseId = Optional.ofNullable(wasehouseRepository.findById(shelfEntity.getWasehoueId())
+        Optional<WarehouseEntity> findByWasehouseId = Optional.ofNullable(warehouseRepository.findById(shelfEntity.getWasehoueId())
                 .orElseThrow(() -> new NotFoundException("Wasehouse Id not found")));
 
         return shelfRepository.save(shelfEntity);
@@ -70,7 +70,7 @@ public class ShelfServiceImpl implements ShelfService {
 //        Optional<WasehouseEntity> findByWasehousId = Optional.ofNullable(wasehouseRepository.findById(id)
 //                .orElseThrow(() -> new NotFoundException("Wasehouse Id not found" + id)));
 
-        Optional<WasehouseEntity> findByWasehousId = wasehouseRepository.findById(id);
+        Optional<WarehouseEntity> findByWasehousId = warehouseRepository.findById(id);
 
         List<ShelfEntity> shelfEntityList = null;
         if(!findByWasehousId.isPresent()){

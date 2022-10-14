@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/index :: areas(~{::title},~{::main})}"
+
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+<main>
+    <div class="container">
+        <div class="row offset-3 mt-5">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">
+                        Create status
+                    </div>
+                    <form th:action="@{/status/create}"
+                          th:object="${status}"
+                          method="post">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="mt-2">
+                                    <div class="form-group">
+                                        <label for="">Classification</label>
+                                        <select class="form-select"
+                                                th:field="*{classFicationId}">
+                                            <option th:each="classi : ${listclassifi}"
+                                                    th:value="${classi.id}"
+                                                    th:text="${classi.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        <label for="">Name</label>
+                                        <input type="text" class="form-control"
+                                               th:field="*{name}"
+                                               placeholder="status name"
+                                               aria-label="status name"
+                                               aria-describedby="basic-addon1">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/status/list}" class="btn btn-primary">List status</a>
+                            <button class="btn btn-success float-end">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

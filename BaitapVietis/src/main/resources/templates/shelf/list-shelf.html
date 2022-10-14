@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       th:replace="~{layout/index :: areas(~{::title},~{::main})}">
 
 <head>
@@ -51,12 +52,16 @@
                         <td th:text="${shelf.id}"></td>
                         <td th:text="${shelf.name}"></td>
                         <td th:text="${shelf.stages}"></td>
-                        <td>
-                            <a th:href="@{'/shelfs/edit/' + ${shelf.id}}" class="btn btn-success">Edit</a>
-                        </td>
-                        <td>
-                            <a th:href="@{'/shelfs/delete/' + ${shelf.id}}" class="btn btn-danger">Delete</a>
-                        </td>
+                        <th:block sec:authorize="isAuthenticated()">
+                            <th:block sec:authorize="hasAuthority('ADMIN')">
+                                <td>
+                                    <a th:href="@{'/shelfs/edit/' + ${shelf.id}}" class="btn btn-success">Edit</a>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/shelfs/delete/' + ${shelf.id}}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </th:block>
+                        </th:block>
                     </tr>
                     </tbody>
                 </table>

@@ -19,32 +19,37 @@
         <div class="row mt-5">
             <div class="">
                 <h5 class="">
-                    List shelf
+                    List status
                 </h5>
-                <a th:href="@{/readers/add}" class="btn btn-success">Create</a>
+                <a th:href="@{/status/add}" class="btn btn-success">Create</a>
 
                 <table class="table table-bordered table-hover mt-3">
                     <thead>
                     <tr>
-                        <th>Ip address</th>
+                        <th>Status id</th>
+                        <th>Status Name</th>
+                        <th>Classification id</th>
+                        <th>Classification name</th>
                         <th colspan="2">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="reader : ${listReader}">
-                        <td th:text="${reader.ipAddress}"></td>
+                    <tr th:each="status : ${listStatus}">
+                        <td th:text="${status.classification_id}"></td>
+                        <td th:text="${status.classification_name}"></td>
+                        <td th:text="${status.status_id}"></td>
+                        <td th:text="${status.status_name}"></td>
                         <th:block sec:authorize="isAuthenticated()">
                             <th:block sec:authorize="hasAuthority('ADMIN')">
                                 <td>
-                                    <a class="btn btn-success" th:href="@{'/readers/edit/' + ${reader.id}}">Edit</a>
+                                    <a th:href="@{'/status/edit/' + ${status.status_id}}" class="btn btn-success">Edit</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-danger" th:href="@{'/readers/delete/' + ${reader.id}}">Delete</a>
+                                    <a th:href="@{'/status/delete/' + ${status.status_id}}" class="btn btn-danger">Delete</a>
                                 </td>
                             </th:block>
                         </th:block>
                     </tr>
-
                     </tbody>
                 </table>
                 <div class="">

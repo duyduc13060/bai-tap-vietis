@@ -3,7 +3,7 @@ package com.example.baitapvietis.controller;
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.GatesEntity;
 import com.example.baitapvietis.service.GateService;
-import com.example.baitapvietis.service.WasehouseService;
+import com.example.baitapvietis.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,21 +32,21 @@ public class GateController {
     private GateService gateService;
 
     @Autowired
-    private  WasehouseService wasehouseService;
+    private WarehouseService warehouseService;
 
 
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/list")
     public String getAll(Model model){
         model.addAttribute("gate", new GatesEntity());
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         model.addAttribute("listGate", gateService.getAll());
         return "gate/list-gate";
     }
 
     @GetMapping("/add")
     public String getFormAdd(Model model){
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         model.addAttribute("gate", new GatesEntity());
 
         return "gate/add-gate";

@@ -18,6 +18,7 @@ public class AntenWasehouseDao {
         String strQuery =
                 ""
                         + "SELECT aten.id as anten_id, "
+                        + "aten.gate_name as gate_name, "
                         + "wase.id as wasehouse_id, "
                         + "wase.wasehouse_name as wasehouse_name, "
                         + "aten.port_no as port_no, "

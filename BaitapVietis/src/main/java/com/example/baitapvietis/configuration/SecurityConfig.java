@@ -43,13 +43,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable();
 
-//        http.authorizeRequests()
-////                .antMatchers("/users/add").access("hasRole('ADMIN')")
-//                .antMatchers("/users/add").hasAuthority("ADMIN")
-//                .antMatchers("/users/list").hasAuthority("ADMIN")
-//                .antMatchers("/users/edit/**").hasRole("ADMIN")
-//                .antMatchers("/home/index").authenticated()
-//                .anyRequest().permitAll();
+        http.authorizeRequests()
+                .antMatchers("/users/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/users/**").hasAuthority("ADMIN")
+                .antMatchers("/warehouses/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/warehouses/**").hasAuthority("ADMIN")
+                .antMatchers("/antens/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/antens/**").hasAuthority("ADMIN")
+                .antMatchers("/shelfs/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/shelfs/**").hasAuthority("ADMIN")
+                .antMatchers("/readers/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/readers/**").hasAuthority("ADMIN")
+                .antMatchers("/gates/list").hasAnyAuthority("USER","ADMIN")
+                .antMatchers("/gates/**").hasAuthority("ADMIN")
+                .antMatchers("/home/index").authenticated()
+                .anyRequest().permitAll();
 
         http.formLogin()
                 .loginPage("/auth/login/form")

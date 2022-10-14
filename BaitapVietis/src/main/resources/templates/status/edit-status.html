@@ -2,6 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/index :: areas(~{::title},~{::main})}"
+
 >
 
 <head>
@@ -15,33 +16,33 @@
 <body>
 <main>
     <div class="container">
-        <div class="row offset-4 mt-5">
-            <div class="col-6">
+        <div class="row offset-3 mt-5">
+            <div class="col-8">
                 <div class="card">
                     <div class="card-header">
-                        Edit wasehouse
+                        Create status
                     </div>
-                    <form th:action="@{'/wasehouses/update/' +${wasehouse.id} }"
-                          th:object="${wasehouse}"
+                    <form th:action="@{'/status/update/' + ${status.id}}"
+                          th:object="${status}"
                           method="post">
                         <div class="card-body">
                             <div class="row mb-3">
                                 <div class="mt-2">
                                     <div class="form-group">
-                                        <label for="">wasehouse name</label>
-                                        <input type="text" class="form-control"
-                                               th:field="*{wasehouseName}"
-                                               placeholder="wasehouse name"
-                                               aria-label="wasehouse name"
-                                               aria-describedby="basic-addon1">
+                                        <label for="">Classification</label>
+                                        <select class="form-select"
+                                                th:field="*{classFicationId}">
+                                            <option th:each="classi : ${listclassifi}"
+                                                    th:value="${classi.id}"
+                                                    th:text="${classi.name}"></option>
+                                        </select>
                                     </div>
-
-                                    <div class="form-group mt-3">
-                                        <label for="">Address</label>
+                                    <div class="form-group mt-2">
+                                        <label for="">Name</label>
                                         <input type="text" class="form-control"
-                                               th:field="*{address}"
-                                               placeholder="Address"
-                                               aria-label="Address"
+                                               th:field="*{name}"
+                                               placeholder="status name"
+                                               aria-label="status name"
                                                aria-describedby="basic-addon1">
                                     </div>
 
@@ -49,8 +50,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a th:href="@{/wasehouses/list}" class="btn btn-primary">List Wasehouse</a>
-                            <button class="btn btn-success float-end">Edit</button>
+                            <a th:href="@{/status/list}" class="btn btn-primary">List status</a>
+                            <button class="btn btn-success float-end">Save</button>
                         </div>
                     </form>
                 </div>

@@ -2,9 +2,9 @@ package com.example.baitapvietis.service.impl;
 
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.GatesEntity;
-import com.example.baitapvietis.model.entity.WasehouseEntity;
+import com.example.baitapvietis.model.entity.WarehouseEntity;
 import com.example.baitapvietis.repository.GateRepository;
-import com.example.baitapvietis.repository.WasehouseRepository;
+import com.example.baitapvietis.repository.WarehouseRepository;
 import com.example.baitapvietis.service.GateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ import java.util.Optional;
 public class GateServiceImpl implements GateService {
 
     private final GateRepository gateRepository;
-    private final WasehouseRepository wasehouseRepository;
+    private final WarehouseRepository warehouseRepository;
 
     @Autowired
     public GateServiceImpl(GateRepository gateRepository,
-            WasehouseRepository wasehouseRepository
+            WarehouseRepository warehouseRepository
     ){
         this.gateRepository = gateRepository;
-        this.wasehouseRepository = wasehouseRepository;
+        this.warehouseRepository = warehouseRepository;
     }
 
 
@@ -39,11 +39,11 @@ public class GateServiceImpl implements GateService {
 
     @Override
     public GatesEntity create(GatesEntity gateEntity){
-        Optional<WasehouseEntity> wasehouse = Optional.ofNullable(wasehouseRepository.findById(gateEntity.getWasehouseId()).
+        Optional<WarehouseEntity> wasehouse = Optional.ofNullable(warehouseRepository.findById(gateEntity.getWasehouseId()).
                 orElseThrow(() -> new NotFoundException("Wasehouse id not found" + gateEntity.getWasehouseId())));
 
-        WasehouseEntity wasehouseEntity = wasehouse.get();
-        gateEntity.setWasehouseId(wasehouseEntity.getId());
+        WarehouseEntity warehouseEntity = wasehouse.get();
+        gateEntity.setWasehouseId(warehouseEntity.getId());
         return gateRepository.save(gateEntity);
     }
 

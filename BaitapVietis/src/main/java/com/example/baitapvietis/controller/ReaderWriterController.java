@@ -3,7 +3,7 @@ package com.example.baitapvietis.controller;
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.ReaderWriterEntity;
 import com.example.baitapvietis.service.ReaderWriterService;
-import com.example.baitapvietis.service.WasehouseService;
+import com.example.baitapvietis.service.WarehouseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +19,14 @@ import java.util.Optional;
 public class ReaderWriterController {
 
     private final ReaderWriterService readerWriterService;
-    private final WasehouseService wasehouseService;
+    private final WarehouseService warehouseService;
 
     public ReaderWriterController(
             ReaderWriterService readerWriterService,
-            WasehouseService wasehouseService
+            WarehouseService warehouseService
     ){
         this.readerWriterService = readerWriterService;
-        this.wasehouseService = wasehouseService;
+        this.warehouseService = warehouseService;
     }
 
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
@@ -40,7 +40,7 @@ public class ReaderWriterController {
     @RequestMapping("/add")
     public String getFormAdd(Model model){
         model.addAttribute("reader", new ReaderWriterEntity());
-        model.addAttribute("listWasehouse",wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         return "readerWriter/add-readerWriter";
     }
 
@@ -50,7 +50,7 @@ public class ReaderWriterController {
         Optional<ReaderWriterEntity> readerWriter = Optional.ofNullable(readerWriterService.findById(id).
                 orElseThrow(() -> new NotFoundException("Reader id not found" + id)));
         model.addAttribute("reader",readerWriter.get());
-        model.addAttribute("listWasehouse",wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         return "readerWriter/edit-readerWriter";
     }
 

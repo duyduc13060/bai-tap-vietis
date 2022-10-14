@@ -1,6 +1,5 @@
 package com.example.baitapvietis.service.impl;
 
-import com.example.baitapvietis.contants.RoleEnum;
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.dto.UserDto;
 import com.example.baitapvietis.model.entity.UserEntity;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -34,26 +32,27 @@ public class UserServiceImpl implements UserService {
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             ModelMapper modelMapper
-    ){
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<UserDto> listUser(){
+    public List<UserDto> listUser() {
         List<UserEntity> userEntityList = userRepository.findAll();
         return userEntityList.stream()
-                .map(userEntity -> modelMapper.map(userEntity,UserDto.class))
+                .map(userEntity -> modelMapper.map(userEntity, UserDto.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDto create(UserDto userDto){
+    public UserDto create(UserDto userDto) {
         Optional<UserEntity> findByUsername = userRepository.findByUsername(userDto.getUsername());
-        if(findByUsername.isPresent()) return  null;
 
-        UserEntity userEntity = modelMapper.map(userDto,UserEntity.class);
+        if (findByUsername.isPresent()) return null;
+
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
@@ -64,21 +63,21 @@ public class UserServiceImpl implements UserService {
         userEntity.setDateOfBrithday(localDate.toString());
         System.out.println(localDate + "date");
 
-        return modelMapper.map(userRepository.save(userEntity),UserDto.class);
+        return modelMapper.map(userRepository.save(userEntity), UserDto.class);
     }
 
     @Override
-    public UserDto findById(Long id){
+    public UserDto findById(Long id) {
 
         UserEntity user = userRepository.findById(id)
-                .orElseThrow(()->new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException(""));
 
 
-        return modelMapper.map(user,UserDto.class);
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
-    public boolean deleteUser(Long id){
+    public boolean deleteUser(Long id) {
         Optional<UserEntity> optionalUser = Optional.ofNullable(userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("User id not found" + id)));
         UserEntity userEntity = optionalUser.get();
@@ -89,48 +88,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(Long id, UserDto userDto){
+    public UserDto update(Long id, UserDto userDto) {
         Optional<UserEntity> findById = Optional.ofNullable(userRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("User id not found " + id)));
 
         UserEntity userOld = findById.get();
-        System.out.println(userOld+"old");
+        System.out.println(userOld + "old");
 
         userDto.setUsername(userOld.getUsername());
         userDto.setPassword(userOld.getPassword());
         userDto.setDateOfBrithday(userOld.getDateOfBrithday());
 
-        UserEntity userEntity = modelMapper.map(userDto,UserEntity.class);
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
 
 
 //        userEntity.setUsername(userOld.getUsername());
 //        userEntity.setPassword(userOld.getPassword());
 //        userEntity.setDateOfBrithday(userOld.getDateOfBrithday());
 
-        return modelMapper.map(userRepository.save(userEntity),UserDto.class);
+        return modelMapper.map(userRepository.save(userEntity), UserDto.class);
     }
 
     @Override
-    public List<UserEntity> search(String username){
+    public List<UserEntity> search(String username) {
         List<UserEntity> userEntityList = null;
 
-        if(!StringUtils.hasText(username)){
+        if (!StringUtils.hasText(username)) {
             userEntityList = userRepository.findAll();
-            return userEntityList;
-        }else{
+        } else {
             userEntityList = userRepository.searchByUsernameLike("%" + username + "%");
-            return userEntityList;
+        }
+        return userEntityList;
+    }
+
+    @Override
+    public Page<UserEntity> pageNavigation(Integer pageNumber, Integer pageSize) {
+
+        int page = 0;
+        int size = 10;
+
+        if (pageNumber != null) {
+            page = pageNumber - 1;
+        }
+        if (pageSize != null) {
+            size = pageSize;
         }
 
-    }
-
-    public Page<UserEntity> pageNavigation(int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber,10);
-        Page<UserEntity> page = userRepository.findAll(pageable);
-        return page;
+        return userRepository.findAll(PageRequest.of(page, size));
     }
 
 
+    @Override
+    public Page<UserEntity> serachAndPage(String username, Pageable pageable) {
+
+        Page<UserEntity> entityPage = null;
+
+        if (StringUtils.hasText(username)) {
+            entityPage = userRepository.findByUsernameLike("%" + username + "%", pageable);
+        } else {
+            entityPage = userRepository.findAll(pageable);
+        }
+        return entityPage;
+    }
 
 
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       th:replace="~{layout/index :: areas(~{::title},~{::main})}">
 
 <head>
@@ -21,57 +22,92 @@
                     List Anten
                 </h5>
                 <a th:href="@{/antens/add}" class="btn btn-success">Create</a>
+                <div class="row">
+                    <div class="col-3">
+                        <form th:action="@{/antens/search}">
+                            <div class="row">
+                                <div class="col">
+                                    <label>Wasehouse Name</label>
+                                    <select class="form-select" name="id"
+                                            aria-label="Default select example">
+                                        <option value="">Chosse warehouse name</option>
+                                        <option th:each="wasehouse : ${listWasehouse}"
+                                                th:value="${wasehouse.id}"
+                                                th:text="${wasehouse.wasehouseName}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="">Anten name</label>
+                                        <input type="text" class="form-control"
+                                               name="name"
+                                               placeholder="Name" aria-label="Name"
+                                               aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-success float-end">search</button>
+                        </form>
+                    </div>
 
-                <table class="table table-bordered table-hover mt-3">
-                    <thead>
-                    <tr>
-                        <th>Wasehouse Id</th>
-                        <th>Wasehouse Name</th>
-                        <th>Anten Id</th>
-                        <th>Port no</th>
-                        <th>Shelf Id</th>
-                        <th>Stages Number</th>
-                        <th colspan="2">action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="l : ${listAnten}">
-                        <td th:text="${l.getWasehouse_id()}"></td>
-                        <td th:text="${l.getWasehouse_name()}"></td>
-                        <td th:text="${l.getAnten_id()}"></td>
-                        <td th:text="${l.getPort_no()}"></td>
-                        <td th:text="${l.getShelf_id()}"></td>
-                        <td th:text="${l.getStages_number()}"></td>
-                        <td>
-                            <a th:href="@{'/antens/edit/' + ${l.getAnten_id()}}" class="btn btn-success">Edit</a>
-                        </td>
-                        <td>
-                            <a th:href="@{'/antens/delete/' + ${l.getAnten_id()}}" href=""
-                               class="btn btn-danger">Delete</a>
-                        </td>
-                    </tr>
-                    <!--                    <tr th:each="anten : ${listAnten}">-->
-                    <!--                        <td ></td>-->
-                    <!--                        <td></td>-->
-                    <!--                        <td th:text="${anten.id}"></td>-->
-                    <!--                        <td th:text="${anten.portNo}"></td>-->
-                    <!--                        <td th:text="${anten.sheftId}"></td>-->
-                    <!--                        <td th:text="${anten.stageNumber}"></td>-->
-                    <!--                        <td>-->
-                    <!--                            <a th:href="@{'/antens/edit/' + ${anten.id}}" class="btn btn-success">Edit</a>-->
-                    <!--                        </td>-->
-                    <!--                        <td>-->
-                    <!--                            <a th:href="@{'/antens/delete/' + ${anten.id}}" href="" class="btn btn-danger">Delete</a>-->
-                    <!--                        </td>-->
-                    <!--                    </tr>-->
-                    </tbody>
-                </table>
-                <div class="">
-                    <button class="btn btn-success float-end">Back</button>
+                    <table class="table table-bordered table-hover mt-3">
+                        <thead>
+                        <tr>
+                            <th>Wasehouse Id</th>
+                            <th>Wasehouse Name</th>
+                            <th>Anten Id</th>
+                            <th>Gate name</th>
+                            <th>Port no</th>
+                            <th>Shelf Id</th>
+                            <th>Stages Number</th>
+                            <th colspan="2">action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="l : ${listAnten}">
+                            <td th:text="${l.getWasehouse_id()}"></td>
+                            <td th:text="${l.getWasehouse_name()}"></td>
+                            <td th:text="${l.getAnten_id()}"></td>
+                            <td th:text="${l.getGate_name()}"></td>
+                            <td th:text="${l.getPort_no()}"></td>
+                            <td th:text="${l.getShelf_id()}"></td>
+                            <td th:text="${l.getStages_number()}"></td>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <th:block sec:authorize="hasAuthority('ADMIN')">
+                                    <td>
+                                        <a th:href="@{'/antens/edit/' + ${l.getAnten_id()}}"
+                                           class="btn btn-success">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/antens/delete/' + ${l.getAnten_id()}}" href=""
+                                           class="btn btn-danger">Delete</a>
+                                    </td>
+                                </th:block>
+                            </th:block>
+                        </tr>
+                        <!--                    <tr th:each="anten : ${listAnten}">-->
+                        <!--                        <td ></td>-->
+                        <!--                        <td></td>-->
+                        <!--                        <td th:text="${anten.id}"></td>-->
+                        <!--                        <td th:text="${anten.portNo}"></td>-->
+                        <!--                        <td th:text="${anten.sheftId}"></td>-->
+                        <!--                        <td th:text="${anten.stageNumber}"></td>-->
+                        <!--                        <td>-->
+                        <!--                            <a th:href="@{'/antens/edit/' + ${anten.id}}" class="btn btn-success">Edit</a>-->
+                        <!--                        </td>-->
+                        <!--                        <td>-->
+                        <!--                            <a th:href="@{'/antens/delete/' + ${anten.id}}" href="" class="btn btn-danger">Delete</a>-->
+                        <!--                        </td>-->
+                        <!--                    </tr>-->
+                        </tbody>
+                    </table>
+                    <div class="">
+                        <button class="btn btn-success float-end">Back</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </main>
 
 <!-- JavaScript Bundle with Popper -->

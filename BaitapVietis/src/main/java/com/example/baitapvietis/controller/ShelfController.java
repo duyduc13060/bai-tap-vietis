@@ -3,9 +3,7 @@ package com.example.baitapvietis.controller;
 import com.example.baitapvietis.exception.NotFoundException;
 import com.example.baitapvietis.model.entity.ShelfEntity;
 import com.example.baitapvietis.service.ShelfService;
-import com.example.baitapvietis.service.WasehouseService;
-import com.example.baitapvietis.service.impl.ShelfServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.baitapvietis.service.WarehouseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,21 +17,21 @@ import java.util.Optional;
 public class ShelfController {
 
     private final ShelfService shelfService;
-    private final WasehouseService wasehouseService;
+    private final WarehouseService warehouseService;
 
     public ShelfController(
             ShelfService shelfService,
-            WasehouseService wasehouseService
+            WarehouseService warehouseService
     ){
         this.shelfService = shelfService;
-        this.wasehouseService = wasehouseService;
+        this.warehouseService = warehouseService;
     }
 
 
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/list")
     public String getAll(Model model){
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         model.addAttribute("listShelf",shelfService.getALl());
         return "shelf/list-shelf";
     }
@@ -42,7 +40,7 @@ public class ShelfController {
     @GetMapping("/add")
     public String loadForm(Model model){
         model.addAttribute("shelf",new ShelfEntity());
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
         return "shelf/add-shelf";
     }
 
@@ -54,7 +52,7 @@ public class ShelfController {
         ShelfEntity shelfEntity = findById.get();
 
         model.addAttribute("shelf",shelfEntity);
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
 
         return "shelf/edit-shelf";
     }
@@ -92,7 +90,7 @@ public class ShelfController {
         @RequestParam(value = "id",required = false) Long id ,
         Model model
     ){
-        model.addAttribute("listWasehouse", wasehouseService.getAll());
+        model.addAttribute("listWasehouse", warehouseService.getAll());
 
         List<ShelfEntity> shelfEntityList = shelfService.search(id);
         model.addAttribute("listShelf",shelfEntityList);

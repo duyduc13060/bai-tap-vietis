@@ -19,4 +19,5 @@ public interface AntenService {
 
     void delete(Long id);
 
+    List<AntenWasehouseDto> search(Long id, String gateName);
 }

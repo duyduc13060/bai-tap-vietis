@@ -31,7 +31,6 @@ public class AuthServiceImpl implements AuthService {
     public void changePassword(ChangePassword changePassword){
         CustomerUserDetail userDetail = CurrentUserUtils.getCurrentUSerDetails();
 
-
         if(!passwordEncoder.matches(changePassword.getPasswordOld(),userDetail.getPassword())){
             throw new BadRequstException("Mật khẩu cũ không chính xác");
         }

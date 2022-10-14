@@ -24,7 +24,7 @@ public class AuthController {
     @RequestMapping(value = "/auth/login/success",method = RequestMethod.GET)
     public String success(Model model){
         model.addAttribute("message","dang nhap thanh cong");
-        return "security/login";
+        return "redirect:/home/index";
     }
 
     @RequestMapping(value = "/auth/login/error",method = RequestMethod.GET)

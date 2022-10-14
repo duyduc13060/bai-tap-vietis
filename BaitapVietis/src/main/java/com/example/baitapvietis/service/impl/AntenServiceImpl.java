@@ -6,13 +6,13 @@ import com.example.baitapvietis.model.dto.AntenWasehouseDto;
 import com.example.baitapvietis.model.entity.AntenEntity;
 import com.example.baitapvietis.model.entity.ReaderWriterEntity;
 import com.example.baitapvietis.model.entity.ShelfEntity;
-import com.example.baitapvietis.model.entity.WasehouseEntity;
 import com.example.baitapvietis.repository.AntenRepository;
 import com.example.baitapvietis.repository.ReaderWriterRepository;
 import com.example.baitapvietis.repository.ShelfRepository;
-import com.example.baitapvietis.repository.WasehouseRepository;
+import com.example.baitapvietis.repository.WarehouseRepository;
 import com.example.baitapvietis.service.AntenService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,39 +24,39 @@ public class AntenServiceImpl implements AntenService {
     private final ShelfRepository shelfRepository;
     private final ReaderWriterRepository readerWriterRepository;
     private final AntenWasehouseDao antenWasehouseDao;
-    private final WasehouseRepository wasehouseRepository;
+    private final WarehouseRepository warehouseRepository;
 
     public AntenServiceImpl(
             AntenRepository antenRepository,
             ShelfRepository shelfRepository,
             ReaderWriterRepository readerWriterRepository,
             AntenWasehouseDao antenWasehouseDao,
-            WasehouseRepository wasehouseRepository
-    ){
+            WarehouseRepository warehouseRepository
+    ) {
         this.antenRepository = antenRepository;
         this.shelfRepository = shelfRepository;
         this.readerWriterRepository = readerWriterRepository;
         this.antenWasehouseDao = antenWasehouseDao;
-        this.wasehouseRepository = wasehouseRepository;
+        this.warehouseRepository = warehouseRepository;
     }
 
     @Override
-    public List<AntenEntity> getAll(){
+    public List<AntenEntity> getAll() {
         return antenRepository.findAll();
     }
 
     @Override
-    public List<AntenWasehouseDto> get(){
+    public List<AntenWasehouseDto> get() {
         return antenWasehouseDao.getAntenWasehouse();
     }
 
     @Override
-    public Optional<AntenEntity> findById(Long id){
+    public Optional<AntenEntity> findById(Long id) {
         return antenRepository.findById(id);
     }
 
     @Override
-    public AntenEntity create(AntenEntity antenEntity){
+    public AntenEntity create(AntenEntity antenEntity) {
         Optional<ShelfEntity> findByShelfId = Optional.ofNullable(shelfRepository.findById(antenEntity.getSheftId()).
                 orElseThrow(() -> new NotFoundException("Shelf id not found" + antenEntity.getSheftId())));
 
@@ -67,7 +67,7 @@ public class AntenServiceImpl implements AntenService {
     }
 
     @Override
-    public AntenEntity update(Long id, AntenEntity antenEntity){
+    public AntenEntity update(Long id, AntenEntity antenEntity) {
         Optional<AntenEntity> findById = Optional.ofNullable(antenRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Anten id not found" + id)));
         AntenEntity anten = findById.get();
@@ -76,7 +76,7 @@ public class AntenServiceImpl implements AntenService {
     }
 
     @Override
-    public void delete(Long id){
+    public void delete(Long id) {
         Optional<AntenEntity> findById = Optional.ofNullable(antenRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Anten not found id" + id)));
         AntenEntity anten = findById.get();
@@ -84,11 +84,19 @@ public class AntenServiceImpl implements AntenService {
     }
 
 
+    @Override
+    public List<AntenWasehouseDto> search(Long id, String gateName) {
+        List<AntenWasehouseDto> antenWasehouseDtos = null;
 
-
-
-
-
+        if (id == null && !StringUtils.hasText(gateName)) {
+            antenWasehouseDtos = antenWasehouseDao.getAntenWasehouse();
+        } else if (id == null && StringUtils.hasText(gateName)) {
+            antenWasehouseDtos = antenRepository.searchByName("%" + gateName + "%");
+        } else {
+            antenWasehouseDtos = antenRepository.searchByWarehouseId(id);
+        }
+        return antenWasehouseDtos;
+    }
 
 
 }

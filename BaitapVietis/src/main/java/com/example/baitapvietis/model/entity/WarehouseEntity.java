@@ -3,7 +3,6 @@ package com.example.baitapvietis.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "wasehouse")
@@ -12,7 +11,7 @@ import java.util.Collection;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WasehouseEntity {
+public class WarehouseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
